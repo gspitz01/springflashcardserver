@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.gregspitz.springflashcardserver.TestData.EXPECTED_FLASHCARDS;
+import static com.gregspitz.springflashcardserver.TestData.FLASHCARD_1;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,9 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = FlashcardController.class, secure = false)
 public class FlashcardControllerTest {
 
-    private static final Flashcard FLASHCARD_1 = new Flashcard("0", "Front", "Back");
-    private static final Flashcard FLASHCARD_2 = new Flashcard("1", "Front2", "Back2");
-    private static final List<Flashcard> EXPECTED_FLASHCARDS = Arrays.asList(FLASHCARD_1, FLASHCARD_2);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final TypeFactory TYPE_FACTORY = OBJECT_MAPPER.getTypeFactory();
 
