@@ -21,6 +21,7 @@ public class DataStructuresToFlashcardTransformerTest {
 
     @Before
     public void setup() {
+        // TODO: change how this works
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource(DATA_FILE_NAME);
         jsonFile = resource.getFile();
@@ -36,5 +37,11 @@ public class DataStructuresToFlashcardTransformerTest {
     @Test(expected = IOException.class)
     public void tryingToOpenFileNotThere_throwsIOException() throws IOException {
         DataStructuresToFlashcardTransformer.transformFromFile("Not a real file");
+    }
+
+    @Test
+    public void canInstantiate() {
+        DataStructuresToFlashcardTransformer transformer = new DataStructuresToFlashcardTransformer();
+        assertEquals(transformer.getClass(), DataStructuresToFlashcardTransformer.class);
     }
 }
