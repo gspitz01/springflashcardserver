@@ -10,6 +10,9 @@ public class Flashcard {
     private String front;
     private String back;
 
+    // Default constructor for Jackson
+    public Flashcard() {}
+
     public Flashcard(String front, String back) {
         this(UUID.randomUUID().toString(), front, back);
     }
@@ -17,6 +20,18 @@ public class Flashcard {
     public Flashcard(String id, String front, String back) {
         this.id = id;
         this.front = front;
+        this.back = back;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setFront(String front) {
+        this.front = front;
+    }
+
+    public void setBack(String back) {
         this.back = back;
     }
 
