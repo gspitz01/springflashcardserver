@@ -10,8 +10,6 @@ import java.util.List;
 @RestController
 public class FlashcardController {
 
-    // TODO: fill this in and test
-
     @Autowired
     private FlashcardRepository repository;
 
@@ -29,5 +27,10 @@ public class FlashcardController {
     public Flashcard postFlashcard(@RequestBody Flashcard flashcard) {
         repository.addFlashcard(flashcard);
         return flashcard;
+    }
+
+    @RequestMapping(value = "/flashcard/{flashcardId}", method = RequestMethod.DELETE)
+    public void deleteFlashcard(@PathVariable(value = "flashcardId") String flashcardId) {
+        repository.deleteFlashcard(flashcardId);
     }
 }

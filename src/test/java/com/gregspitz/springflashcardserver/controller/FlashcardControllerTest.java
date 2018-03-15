@@ -22,8 +22,12 @@ import java.util.List;
 import static com.gregspitz.springflashcardserver.TestData.EXPECTED_FLASHCARDS;
 import static com.gregspitz.springflashcardserver.TestData.FLASHCARD_1;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +44,9 @@ public class FlashcardControllerTest {
 
     @Captor
     private ArgumentCaptor<Flashcard> repositoryFlashcardCaptor;
+
+    @Captor
+    private ArgumentCaptor<String> deleteStringIdCaptor;
 
     @MockBean
     private FlashcardRepository mockRepository;
@@ -89,5 +96,24 @@ public class FlashcardControllerTest {
         verify(mockRepository).addFlashcard(repositoryFlashcardCaptor.capture());
         Flashcard savedFlashcard = repositoryFlashcardCaptor.getValue();
         assertEquals(newFlashcard, savedFlashcard);
+    }
+
+    @Test
+    public void postFlashcardRequestWithNoFlashcardData_respondsWithError400() throws Exception {
+        Flashcard nullFlashcard = null;
+        mockMvc.perform(post("/flashcard")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(OBJECT_MAPPER.writeValueAsString(nullFlashcard)))
+                .andExpect(status().is4xxClientError());
+
+    }
+
+    @Test
+    public void deleteFlashcardRequest_removesFlashcardFromRepository() throws Exception {
+        mockMvc.perform(delete("/flashcard/" + FLASHCARD_1.getId()))
+                .andExpect(status().isOk());
+
+        verify(mockRepository).deleteFlashcard(deleteStringIdCaptor.capture());
+        assertEquals(FLASHCARD_1.getId(), deleteStringIdCaptor.getValue());
     }
 }
